@@ -1,0 +1,27 @@
+# Render Blueprint for the Ludo bot. Render -> New -> Blueprint -> pick this repo.
+services:
+  - type: web
+    name: ludo-bot
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      # Token from @BotFather. Never share it.
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      # Bot handle without the @. Used for links and baked into the Mini App at build time.
+      - key: BOT_USERNAME
+        sync: false
+      # Handle (without @) of the main bot that the "Main Bot" button opens.
+      - key: MAIN_BOT_USERNAME
+        value: Ig_MikasaBot
+      # Mini App short name as set in BotFather.
+      - key: MINIAPP_SHORT_NAME
+        value: ludo
+      # Neon Postgres connection string. Keeps profiles and match history across redeploys.
+      # Leave empty to use data/ludo-db.json instead (lost on redeploy).
+      - key: DATABASE_URL
+        sync: false
